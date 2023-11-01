@@ -2,7 +2,7 @@
 
 module.exports = {
     async up(queryInterface, Sequelize) {
-        await queryInterface.createTable("salaries", {
+        await queryInterface.createTable("shifts", {
             id: {
                 allowNull: false,
                 autoIncrement: true,
@@ -10,30 +10,14 @@ module.exports = {
                 type: Sequelize.INTEGER,
             },
             userId: {
-                type: Sequelize.INTEGER,
-            },
-            roleId: {
                 type: Sequelize.STRING,
             },
             time: {
                 type: Sequelize.STRING,
             },
-            basic_salary: {
-                type: Sequelize.STRING,
+            size_user: {
+                type: Sequelize.INTEGER,
             },
-            allowance: {
-                type: Sequelize.STRING,
-            },
-            subsidize: {
-                type: Sequelize.STRING,
-            },
-            responsibility: {
-                type: Sequelize.STRING,
-            },
-            payroll: {
-                type: Sequelize.STRING,
-            },
-
             createdAt: {
                 allowNull: false,
                 type: Sequelize.DATE,
@@ -45,6 +29,6 @@ module.exports = {
         });
     },
     async down(queryInterface, Sequelize) {
-        await queryInterface.dropTable("salaries");
+        await queryInterface.dropTable("shifts");
     },
 };

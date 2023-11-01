@@ -18,9 +18,9 @@ module.exports = {
             return_time: {
                 type: Sequelize.STRING,
             },
-            // working_day: {
-            //     type: Sequelize.STRING,
-            // },
+            time: {
+                type: Sequelize.STRING,
+            },
 
             createdAt: {
                 allowNull: false,

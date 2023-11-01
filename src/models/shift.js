@@ -1,32 +1,31 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-    class Timekeeping extends Model {
+    class Shift extends Model {
         /**
          * Helper method for defining associations.
          * This method is not a part of Sequelize lifecycle.
          * The `models/index` file will call this method automatically.
          */
         static associate(models) {
-            Timekeeping.belongsTo(models.User,
+            Shift.belongsTo(models.User,
                 {
                     foreignKey: 'userId',
-                    as: "timekeepingData"
+                    as: "shiftData"
                 });
         }
     }
-    Timekeeping.init(
+    Shift.init(
         {
             // id: DataTypes.INTEGER,
             userId: DataTypes.INTEGER,
-            hour_come: DataTypes.STRING,
-            return_time: DataTypes.STRING,
             time: DataTypes.STRING,
+            size_user: DataTypes.INTEGER,
         },
         {
             sequelize,
-            modelName: "Timekeeping",
+            modelName: "Shift",
         }
     );
-    return Timekeeping;
+    return Shift;
 };

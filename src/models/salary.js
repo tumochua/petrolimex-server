@@ -20,9 +20,11 @@ module.exports = (sequelize, DataTypes) => {
             // id: DataTypes.INTEGER,
             userId: DataTypes.INTEGER,
             roleId: DataTypes.STRING,
+            time: DataTypes.STRING,
             basic_salary: DataTypes.STRING,
             allowance: DataTypes.STRING,
-            subsidize_orther: DataTypes.STRING,
+            subsidize: DataTypes.STRING,
+            responsibility: DataTypes.STRING,
             payroll: DataTypes.STRING,
         },
         {

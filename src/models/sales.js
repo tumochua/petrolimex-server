@@ -8,7 +8,11 @@ module.exports = (sequelize, DataTypes) => {
          * The `models/index` file will call this method automatically.
          */
         static associate(models) {
-
+            Sales.belongsTo(models.User,
+                {
+                    foreignKey: 'userId',
+                    as: "saleData"
+                });
         }
     }
 
@@ -16,7 +20,9 @@ module.exports = (sequelize, DataTypes) => {
         {
             userId: DataTypes.INTEGER,
             day_for_sale: DataTypes.STRING,
-            sales_figures: DataTypes.STRING,
+            sales_figures_day: DataTypes.STRING,
+            sales_figures_month: DataTypes.STRING,
+            price: DataTypes.STRING,
             file: DataTypes.BLOB,
         },
         {

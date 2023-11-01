@@ -25,6 +25,22 @@ module.exports = (sequelize, DataTypes) => {
         targetKey: "userId",
         as: "salaryData",
       })
+      User.hasMany(models.Shift, {
+        foreignKey: "userId",
+        targetKey: "userId",
+        as: "shiftData",
+      })
+      User.hasMany(models.Notification, {
+        foreignKey: "userId",
+        targetKey: "userId",
+        as: "notificationData",
+      })
+      User.hasMany(models.Sales, {
+        foreignKey: "userId",
+        targetKey: "userId",
+        as: "saleData",
+      })
+
 
       // User.belongsTo(models.Timekeeping, {
       //   foreignKey: 'timeKeepingId',
@@ -50,8 +66,6 @@ module.exports = (sequelize, DataTypes) => {
       password_hash: DataTypes.STRING,
       dob: DataTypes.STRING,
       roleId: DataTypes.STRING,
-      // timeKeepingId: DataTypes.STRING,
-      // salaryId: DataTypes.STRING,
       mobile: DataTypes.STRING,
       gender: DataTypes.STRING,
       home_town: DataTypes.STRING,

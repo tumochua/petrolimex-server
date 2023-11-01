@@ -77,6 +77,7 @@ const handleRegisterUserService = (user) => {
             }
 
             const data = await userCheckEmail(email);
+            console.log('data', data);
             const hashPassword = await useHasPassword(password);
             if (!data) {
                 await db.User.create({
@@ -184,6 +185,18 @@ const handleServiceGetProfileUser = (userId) => {
                         //     "basic_salary"
                         // ],
                     },
+                    {
+                        model: db.Shift,
+                        as: "shiftData",
+                    },
+                    // {
+                    //     model: db.Notification,
+                    //     as: "notificationData",
+                    // },
+                    // {
+                    //     model: db.Sales,
+                    //     as: "saleData",
+                    // },
                 ],
                 raw: false,
                 nest: true,
@@ -199,10 +212,62 @@ const handleServiceGetProfileUser = (userId) => {
     });
 }
 
+const handleServiceCreateNotication = (userId, notificationData) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            // console.log(userId || notificationData.title || notificationData.content);
+            if (!userId || !notificationData.title || !notificationData.content) {
+                resolve({
+                    status: 400,
+                    message: "you are missing a required parameter",
+                });
+            }
+            await db.Notification.create({
+                userId: userId,
+                title: notificationData.title,
+                content: notificationData.content
+            })
+            resolve({ statusCode: 2, message: "create notification successful" });
+        } catch (error) {
+            reject(error);
+        }
+    });
+}
+
+
+const handleServiceCreateShift = (id, dataShift) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            await db.Shift.create({
+                userId: dataShift.userId,
+                time: dataShift?.data?.shifts
+            })
+            resolve({ statusCode: 2, message: "create notification successful" });
+
+        } catch (error) {
+            reject(error);
+        }
+    });
+}
+
+
+const handleServiceDeleteUser = (userId, deleteUserId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            console.log(userId, deleteUserId);
+        } catch (error) {
+            reject(error);
+        }
+    });
+}
+
 
 module.exports = {
     handleServiceGetAllUser,
     handleServiceLoginUser,
     handleRegisterUserService,
-    handleServiceGetProfileUser
+    handleServiceGetProfileUser,
+    handleServiceCreateNotication,
+    handleServiceCreateShift,
+    handleServiceDeleteUser
 }

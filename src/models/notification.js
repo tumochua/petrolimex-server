@@ -8,28 +8,22 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-
+      Notification.belongsTo(models.User,
+        {
+          foreignKey: 'userId',
+          as: "notificationData"
+        });
     }
   }
 
   Notification.init(
     {
       userId: DataTypes.INTEGER,
-      userIdApprove: DataTypes.INTEGER,
-      userIdLikePost: DataTypes.INTEGER,
-      commentsId: DataTypes.INTEGER,
-      socketId: DataTypes.STRING,
-      userName: DataTypes.STRING,
-      statusId: DataTypes.STRING,
-      postsId: DataTypes.INTEGER,
-      roleId: DataTypes.STRING,
-      readId: DataTypes.STRING,
-      reason: DataTypes.STRING,
-      typeId: DataTypes.STRING,
-      content: DataTypes.STRING,
       title: DataTypes.STRING,
-      description: DataTypes.STRING,
-      image: DataTypes.STRING,
+      content: DataTypes.STRING,
+      time: DataTypes.STRING,
+      status: DataTypes.INTEGER,
+      userSee: DataTypes.INTEGER,
     },
     {
       sequelize,

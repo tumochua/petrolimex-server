@@ -15,7 +15,13 @@ module.exports = {
             day_for_sale: {
                 type: Sequelize.STRING,
             },
-            sales_figures: {
+            sales_figures_day: {
+                type: Sequelize.STRING,
+            },
+            sales_figures_month: {
+                type: Sequelize.STRING,
+            },
+            price: {
                 type: Sequelize.STRING,
             },
             file: {
