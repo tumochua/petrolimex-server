@@ -3,7 +3,19 @@ import {
     handleRegisterUserService, handleServiceGetProfileUser,
     handleServiceCreateNotication,
     handleServiceCreateShift,
-    handleServiceDeleteUser
+    handleServiceDeleteUser,
+    handleServiceCreateTimeKeeing,
+    handleServiceGetAllTimeKeeing,
+    handleServiceCountSalary,
+    handleServiceGetAllSalary,
+    handleServiceEditRole,
+    handleServiceGetAllNotification,
+    handleServiceCreateSale,
+    handleServiceGetAllSale,
+    handleServiceResetSales,
+    handleServiceGetUserById,
+    handleServiceEditUsersById,
+    handleServiceCreateReport
 } from '../services/useServices'
 
 const handleGetAllUser = async (req, res) => {
@@ -99,6 +111,151 @@ const handleDeleteUser = async (req, res) => {
         return res.status(200).json(error.message);
     }
 }
+const handleCreateTimeKeeing = async (req, res) => {
+    try {
+        const userId = req.userId;
+        const timekeeping = req.body;
+        const data = await handleServiceCreateTimeKeeing(userId, timekeeping);
+        return res.status(200).json(data);
+    } catch (error) {
+        console.log(error);
+        return res.status(200).json(error.message);
+    }
+}
+
+
+const handleGetAllTimeKeeing = async (req, res) => {
+    try {
+        // console.log(req.query?.roleId);
+        const userId = req.userId;
+        const roleId = req.query?.roleId;
+        const data = await handleServiceGetAllTimeKeeing(userId, roleId);
+        return res.status(200).json(data);
+    } catch (error) {
+        console.log(error);
+        return res.status(200).json(error.message);
+    }
+}
+
+
+const handleCountSalary = async (req, res) => {
+    try {
+        // console.log(req.query?.roleId);
+        const userId = req.userId;
+        const salary = req.body;
+        const data = await handleServiceCountSalary(userId, salary);
+        return res.status(200).json(data);
+    } catch (error) {
+        console.log(error);
+        return res.status(200).json(error.message);
+    }
+}
+
+
+const handleGettAllSalary = async (req, res) => {
+    try {
+        const userId = req.userId;
+        const roleId = req.query?.roleId;
+        const data = await handleServiceGetAllSalary(userId, roleId);
+        return res.status(200).json(data);
+    } catch (error) {
+        console.log(error);
+        return res.status(200).json(error.message);
+    }
+}
+
+const handleEditRole = async (req, res) => {
+    try {
+        const userId = req.userId;
+        const role = req.body;
+        const data = await handleServiceEditRole(userId, role);
+        return res.status(200).json(data);
+    } catch (error) {
+        console.log(error);
+        return res.status(200).json(error.message);
+    }
+}
+
+const handleGetAllNotification = async (req, res) => {
+    try {
+        // const userId = req.userId;
+        // const sales = req.body;
+        const data = await handleServiceGetAllNotification();
+        return res.status(200).json(data);
+    } catch (error) {
+        console.log(error);
+        return res.status(200).json(error.message);
+    }
+}
+
+const handleCreateSale = async (req, res) => {
+    try {
+        const userId = req.userId;
+        const sales = req.body;
+        const data = await handleServiceCreateSale(userId, sales);
+        return res.status(200).json(data);
+    } catch (error) {
+        console.log(error);
+        return res.status(200).json(error.message);
+    }
+}
+
+const handleGetAllSale = async (req, res) => {
+    try {
+        const userId = req.userId;
+        const roleId = req.query?.roleId;
+        const data = await handleServiceGetAllSale(userId, roleId);
+        return res.status(200).json(data);
+    } catch (error) {
+        console.log(error);
+        return res.status(200).json(error.message);
+    }
+}
+
+const handleResetSales = async (req, res) => {
+    try {
+        const timeRest = req.body
+        const data = await handleServiceResetSales(timeRest);
+        return res.status(200).json(data);
+    } catch (error) {
+        console.log(error);
+        return res.status(200).json(error.message);
+    }
+}
+
+const handleGetUserById = async (req, res) => {
+    try {
+        const userId = req.query?.userId
+        const data = await handleServiceGetUserById(userId);
+        return res.status(200).json(data);
+    } catch (error) {
+        console.log(error);
+        return res.status(200).json(error.message);
+    }
+}
+
+const handleEdittUserById = async (req, res) => {
+    try {
+        const users = req.body
+        const data = await handleServiceEditUsersById(users);
+        return res.status(200).json(data);
+    } catch (error) {
+        console.log(error);
+        return res.status(200).json(error.message);
+    }
+}
+
+const handleCreateReport = async (req, res) => {
+    try {
+        const userId = req.userId
+        const reportFile = req.body
+        const data = await handleServiceCreateReport(reportFile, userId);
+        return res.status(200).json(data);
+    } catch (error) {
+        console.log(error);
+        return res.status(200).json(error.message);
+    }
+}
 
 module.exports = {
     handleGetAllUser,
@@ -107,5 +264,17 @@ module.exports = {
     handleGetProfileUser,
     handleCreateNotication,
     handleCreateShift,
-    handleDeleteUser
+    handleDeleteUser,
+    handleCreateTimeKeeing,
+    handleGetAllTimeKeeing,
+    handleCountSalary,
+    handleGettAllSalary,
+    handleEditRole,
+    handleGetAllNotification,
+    handleCreateSale,
+    handleGetAllSale,
+    handleResetSales,
+    handleGetUserById,
+    handleEdittUserById,
+    handleCreateReport
 }

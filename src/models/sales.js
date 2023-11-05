@@ -1,5 +1,7 @@
 "use strict";
-const { Model } = require("sequelize");
+const { Sequelize, Model } = require("sequelize");
+const cron = require('node-cron');
+
 module.exports = (sequelize, DataTypes) => {
     class Sales extends Model {
         /**
@@ -23,6 +25,8 @@ module.exports = (sequelize, DataTypes) => {
             sales_figures_day: DataTypes.STRING,
             sales_figures_month: DataTypes.STRING,
             price: DataTypes.STRING,
+            time: DataTypes.STRING,
+            problem: DataTypes.STRING,
             file: DataTypes.BLOB,
         },
         {
@@ -30,5 +34,17 @@ module.exports = (sequelize, DataTypes) => {
             modelName: "Sales",
         }
     );
+    // Tạo công việc lên lịch để xóa dữ liệu sau 30 giây
+    // cron.schedule('*/30 * * * * *', async () => { // Chạy mỗi 30 giây
+    //     try {
+    //         await Sales.destroy({
+    //             where: {}, // Điều kiện để xóa, rỗng để xóa hết dữ liệu
+    //             truncate: true // Chọn truncate để xóa dữ liệu nhanh hơn
+    //         });
+    //         console.log("Dữ liệu của bảng Sales đã được xóa sau 30 giây.");
+    //     } catch (error) {
+    //         console.error("Lỗi khi xóa dữ liệu:", error);
+    //     }
+    // });
     return Sales;
 };

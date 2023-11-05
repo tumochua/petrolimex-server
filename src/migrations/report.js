@@ -2,7 +2,7 @@
 
 module.exports = {
     async up(queryInterface, Sequelize) {
-        await queryInterface.createTable("sales", {
+        await queryInterface.createTable("reports", {
             id: {
                 allowNull: false,
                 autoIncrement: true,
@@ -10,24 +10,9 @@ module.exports = {
                 type: Sequelize.INTEGER,
             },
             userId: {
-                type: Sequelize.STRING,
-            },
-            day_for_sale: {
-                type: Sequelize.STRING,
-            },
-            sales_figures_day: {
-                type: Sequelize.STRING,
-            },
-            sales_figures_month: {
-                type: Sequelize.STRING,
-            },
-            price: {
-                type: Sequelize.STRING,
+                type: Sequelize.INTEGER,
             },
             time: {
-                type: Sequelize.STRING,
-            },
-            problem: {
                 type: Sequelize.STRING,
             },
             file: {
@@ -45,6 +30,6 @@ module.exports = {
         });
     },
     async down(queryInterface, Sequelize) {
-        await queryInterface.dropTable("sales");
+        await queryInterface.dropTable("reports");
     },
 };

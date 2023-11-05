@@ -25,6 +25,7 @@
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.21",
     "mysql2": "^2.2.5",
+    "node-cron": "^3.0.2",
     "nodemailer": "^6.6.3",
     "react-hook-form": "^7.47.0",
     "redis": "^4.5.0",

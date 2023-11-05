@@ -21,6 +21,9 @@ module.exports = {
             time: {
                 type: Sequelize.STRING,
             },
+            type: {
+                type: Sequelize.STRING,
+            },
 
             createdAt: {
                 allowNull: false,
