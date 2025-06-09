@@ -27,9 +27,10 @@ module.exports = (sequelize, DataTypes) => {
       })
       User.hasMany(models.Shift, {
         foreignKey: "userId",
-        targetKey: "userId",
-        as: "shiftData",
-      })
+        sourceKey: "id", // <-- đúng hơn
+        as: "shiftData"
+      });
+
       User.hasMany(models.Notification, {
         foreignKey: "userId",
         targetKey: "userId",
@@ -72,12 +73,10 @@ module.exports = (sequelize, DataTypes) => {
       cccd: DataTypes.INTEGER,
       nation: DataTypes.STRING,
       education: DataTypes.STRING,
-      userIdNotification: DataTypes.INTEGER,
-      sizeNotification: DataTypes.INTEGER,
       profile: DataTypes.TEXT,
       date_of_join: DataTypes.DATE,
       status: DataTypes.BOOLEAN,
-      last_login: DataTypes.DATE,
+      last_login: DataTypes.STRING,
       image: DataTypes.BLOB,
       refresh_token: DataTypes.STRING,
     },

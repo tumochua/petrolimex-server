@@ -21,6 +21,9 @@ module.exports = {
             sales_figures_month: {
                 type: Sequelize.STRING,
             },
+            type: {
+                type: Sequelize.STRING,
+            },
             price: {
                 type: Sequelize.STRING,
             },

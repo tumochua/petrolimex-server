@@ -15,7 +15,10 @@ import {
     handleServiceResetSales,
     handleServiceGetUserById,
     handleServiceEditUsersById,
-    handleServiceCreateReport
+    handleServiceCreateReport,
+    handleServiceListShift,
+    handleServiceListSale,
+
 } from '../services/useServices'
 
 const handleGetAllUser = async (req, res) => {
@@ -256,6 +259,27 @@ const handleCreateReport = async (req, res) => {
         return res.status(200).json(error.message);
     }
 }
+const handleListShift = async (req, res) => {
+    try {
+
+        const data = await handleServiceListShift();
+        return res.status(200).json(data);
+    } catch (error) {
+        console.log(error);
+        return res.status(200).json(error.message);
+    }
+}
+
+const handleListSales = async (req, res) => {
+    try {
+
+        const data = await handleServiceListSale();
+        return res.status(200).json(data);
+    } catch (error) {
+        console.log(error);
+        return res.status(200).json(error.message);
+    }
+}
 
 module.exports = {
     handleGetAllUser,
@@ -276,5 +300,7 @@ module.exports = {
     handleResetSales,
     handleGetUserById,
     handleEdittUserById,
-    handleCreateReport
+    handleCreateReport,
+    handleListShift,
+    handleListSales
 }

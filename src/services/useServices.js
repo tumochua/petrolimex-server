@@ -53,6 +53,7 @@ const handleServiceGetAllUser = () => {
                         // ],
                     },
                 ],
+                order: [["id", "ASC"]],
                 raw: false,
                 nest: true,
             });
@@ -81,6 +82,8 @@ const handleRegisterUserService = (user) => {
             const data = await userCheckEmail(email);
             // console.log('data', data);
             const hashPassword = await useHasPassword(password);
+            console.log("check hashPassword", hashPassword);
+
             if (!data) {
                 await db.User.create({
                     firstName: firstName,
@@ -102,7 +105,9 @@ const handleRegisterUserService = (user) => {
                 resolve({ statusCode: 4, message: `${data.email} Your have not` });
             }
         } catch (error) {
-            createError.InternalServerError();
+            console.log('check error', error);
+
+            // createError.InternalServerError();
             reject(error);
         }
     });
@@ -249,9 +254,12 @@ const handleServiceCreateNotication = (userId, notificationData) => {
 const handleServiceCreateShift = (id, dataShift) => {
     return new Promise(async (resolve, reject) => {
         try {
+            console.log(dataShift);
+
             await db.Shift.create({
                 userId: dataShift.userId,
-                time: dataShift?.data?.shifts
+                time: dataShift?.data?.date,
+                shift: dataShift?.data?.shifts,
             })
             resolve({ statusCode: 2, message: "create notification successful" });
 
@@ -302,14 +310,16 @@ const handleServiceGetAllTimeKeeing = (userId, roleId) => {
     return new Promise(async (resolve, reject) => {
         try {
             if (roleId === 'R2' || roleId === 'R1') {
-                const allTimekeeing = await db.Timekeeping.findAll()
+                const allTimekeeing = await db.Timekeeping.findAll({
+                    order: [["id", "DESC"]],
+                })
                 resolve({ statusCode: 2, data: allTimekeeing });
             } else {
                 const listTimekeeing = await db.Timekeeping.findAll({
                     where: {
                         userId: userId,
                     },
-
+                    order: [["id", "DESC"]],
                 })
                 resolve({ statusCode: 2, data: listTimekeeing });
             }
@@ -412,7 +422,8 @@ const handleServiceCreateSale = (userId, sales) => {
                 userId: userId,
                 day_for_sale: sales.time,
                 price: sales.price,
-                sales_figures_day: sales.size
+                sales_figures_day: sales.size,
+                type: sales.type
             })
             resolve({ statusCode: 2, message: "create sale successful" });
 
@@ -439,33 +450,74 @@ const handleServiceGetAllSale = (userId, roleId) => {
     });
 }
 
+// let cronJob = null;
+// const startScheduledReset = (timeInSeconds) => {
+//     if (cronJob) {
+//         // Nếu công việc lên lịch đã tồn tại, hủy nó trước khi tạo công việc mới
+//         cronJob.stop();
+//     }
 
+//     cronJob = cron.schedule(`*/${timeInSeconds} * * * * *`, async () => {
+//         try {
+//             await db.Sales.destroy({
+//                 where: {}, // Điều kiện để xóa, rỗng để xóa hết dữ liệu
+//                 truncate: true // Chọn truncate để xóa dữ liệu nhanh hơn
+//             });
+//             console.log('Reset sales successful');
+//         } catch (error) {
+//             console.error('Error resetting sales:', error);
+//         }
+//     });
+// };
+
+// const handleServiceResetSales = async (timeRest) => {
+//     try {
+//         const timeInSeconds = parseInt(timeRest.TIME_RESET); // Chuyển đổi giá trị thời gian sang số nguyên
+
+//         if (timeRest.isResetting) {
+//             if (isNaN(timeInSeconds) || timeInSeconds <= 0) {
+//                 return { statusCode: 1, message: 'Invalid time value.' };
+//             }
+
+//             startScheduledReset(timeInSeconds);
+//             return { statusCode: 2, message: 'Reset sales scheduled' };
+//         }
+
+//         if (cronJob) {
+//             cronJob.stop();
+//             cronJob = null;
+//             return { statusCode: 3, message: 'Reset canceled' };
+//         }
+
+//         return { statusCode: 0, message: 'No action taken' };
+//     } catch (error) {
+//         return { statusCode: 4, message: 'Error handling service reset' };
+//     }
+// };
+
+let resetJob = null;
 const handleServiceResetSales = (timeRest) => {
     return new Promise(async (resolve, reject) => {
         try {
-            console.log(timeRest);
             const timeInSeconds = parseInt(timeRest.TIME_RESET); // Chuyển đổi giá trị thời gian sang số nguyên
-            // if (timeRest.isResetting) {
-            //     resolve('Reset is already in progress.');
-            // }
-            // if (isNaN(timeInSeconds) || timeInSeconds <= 0) {
-            //     resolve('Invalid time value.');
-            // }
             if (timeRest.isResetting) {
-                cron.schedule(`*/${timeInSeconds} * * * * *`, async () => {
+                resetJob = cron.schedule(`*/${timeInSeconds} * * * * *`, async () => {
                     try {
                         await db.Sales.destroy({
                             where: {}, // Điều kiện để xóa, rỗng để xóa hết dữ liệu
                             truncate: true // Chọn truncate để xóa dữ liệu nhanh hơn
                         });
-                        // console.log("result", result);
-                        // console.log('timeInSeconds', timeInSeconds);
+
                         resolve({ statusCode: 2, message: 'Reset sale successful' });
 
                     } catch (error) {
                         resolve({ statusCode: 4, message: 'Reset sale error' });
                     }
                 });
+            } else {
+                resetJob.stop()
+                resetJob = null
+                return { statusCode: 3, message: 'Reset canceled' };
             }
 
         } catch (error) {
@@ -473,6 +525,50 @@ const handleServiceResetSales = (timeRest) => {
         }
     });
 }
+
+// let resetJob = null;
+// // let isResetting = false
+// const handleServiceResetSales = (timeRest) => {
+//     try {
+//         const timeInSeconds = parseInt(timeRest.TIME_RESET);
+//         console.log(timeRest);
+//         // isResetting = true
+//         if (timeRest.isResetting) {
+//             // isResetting = false
+//             if (!resetJob) {
+//                 resetJob = cron.schedule(`*/${timeInSeconds} * * * * *`, async () => {
+//                     try {
+//                         await db.Sales.destroy({
+//                             where: {}, // Điều kiện để xóa, rỗng để xóa hết dữ liệu
+//                             truncate: true // Chọn truncate để xóa dữ liệu nhanh hơn
+//                         });
+//                         console.log('Reset sale successful');
+//                     } catch (error) {
+//                         console.error('Reset sale error:', error);
+//                     }
+//                 });
+//                 resolve({ statusCode: 2, message: 'Reset sale successful' });
+//             } else {
+//                 return { statusCode: 1, message: 'Reset already scheduled' };
+//             }
+//         } else {
+//             if (resetJob) {
+//                 resetJob.stop();
+//                 resetJob = null;
+//                 return { statusCode: 3, message: 'Reset canceled' };
+//             } else {
+//                 return { statusCode: 4, message: 'No action taken' };
+//             }
+//         }
+
+//     } catch (error) {
+//         return { statusCode: 0, message: 'Error occurred in handling reset' };
+//     } finally {
+//         // isResetting = false
+//     }
+// };
+
+
 
 const handleServiceGetUserById = (userId) => {
     return new Promise(async (resolve, reject) => {
@@ -549,6 +645,50 @@ const handleServiceCreateReport = (reportFile, userId) => {
     });
 }
 
+const handleServiceListShift = (r) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const listShift = await db.Shift.findAll({
+                include: [
+                    {
+                        model: db.User,
+                        as: "shiftData",
+                        attributes: ["id", "firstName", "lastName", "email"] // chỉ lấy field cần
+                    }
+                ],
+                raw: true, // ép trả về plain object
+                nest: true // giúp giữ nested object đúng theo `as`
+            });
+
+            resolve({
+                statusCode: 2,
+                data: listShift
+            });
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
+
+
+const handleServiceListSale = (r) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const listSale = await db.Sales.findAll({
+
+            });
+
+            resolve({
+                statusCode: 2,
+                data: listSale
+            });
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
+
+
 module.exports = {
     handleServiceGetAllUser,
     handleServiceLoginUser,
@@ -568,5 +708,7 @@ module.exports = {
     handleServiceResetSales,
     handleServiceGetUserById,
     handleServiceEditUsersById,
-    handleServiceCreateReport
+    handleServiceCreateReport,
+    handleServiceListShift,
+    handleServiceListSale
 }

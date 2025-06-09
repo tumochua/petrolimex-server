@@ -90,7 +90,38 @@ app.use((eror, req, res, next) => {
 
 connectDB();
 
+
+// let cronJob = null;
+
+// // Hàm xóa dữ liệu trong cơ sở dữ liệu
+// const resetDataInDB = async () => {
+//   try {
+//     await db.Sales.destroy({
+//       where: {}, // Điều kiện để xóa, rỗng để xóa hết dữ liệu
+//       truncate: true // Chọn truncate để xóa dữ liệu nhanh hơn
+//     });
+//     console.log('Data has been reset in the database.');
+//   } catch (error) {
+//     console.error('Error occurred while resetting data:', error);
+//   }
+// };
+
+// // Bắt đầu công việc lên lịch
+// const startScheduledReset = (timeInSeconds) => {
+//   if (cronJob) {
+//     // Nếu công việc lên lịch đã tồn tại, hủy nó trước khi tạo công việc mới
+//     cronJob.stop();
+//   }
+
+//   cronJob = cron.schedule(`*/${timeInSeconds} * * * * *`, async () => {
+//     resetDataInDB();
+//   });
+// };
+
+
 let port = process.env.PORT || 6969;
+
+
 
 server.listen(port, () => {
   console.log("backend nodejs in runing on the port" + port);

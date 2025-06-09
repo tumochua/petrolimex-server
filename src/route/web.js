@@ -21,7 +21,9 @@ import {
   handleResetSales,
   handleGetUserById,
   handleEdittUserById,
-  handleCreateReport
+  handleCreateReport,
+  handleListShift,
+  handleListSales
 } from '../controllers/useController'
 
 ///// router
@@ -66,6 +68,8 @@ let initWebRoutes = (app) => {
   router.get('/api-get-use-of-id', useCheckErrorToken, handleGetUserById)
   router.put('/api-edit-user', useCheckErrorToken, handleEdittUserById)
   router.post('/api-create-report', useCheckErrorToken, handleCreateReport)
+  router.get('/api-list-shift', useCheckErrorToken, handleListShift)
+  router.get('/api-list-sales', useCheckErrorToken, handleListSales)
 
   return app.use("/", router);
 };

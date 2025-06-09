@@ -24,6 +24,7 @@ module.exports = (sequelize, DataTypes) => {
             day_for_sale: DataTypes.STRING,
             sales_figures_day: DataTypes.STRING,
             sales_figures_month: DataTypes.STRING,
+            type: DataTypes.STRING,
             price: DataTypes.STRING,
             time: DataTypes.STRING,
             problem: DataTypes.STRING,

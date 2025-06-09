@@ -15,6 +15,9 @@ module.exports = {
             time: {
                 type: Sequelize.STRING,
             },
+            shift: {
+                type: Sequelize.STRING,
+            },
             size_user: {
                 type: Sequelize.INTEGER,
             },

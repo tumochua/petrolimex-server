@@ -53,17 +53,12 @@ module.exports = {
             education: {
                 type: Sequelize.STRING,
             },
-            userIdNotification: {
-                type: Sequelize.INTEGER,
-            },
-            sizeNotification: {
-                type: Sequelize.INTEGER,
-            },
+
             profile: {
                 type: Sequelize.TEXT,
             },
             date_of_join: {
-                type: Sequelize.DATE,
+                type: Sequelize.STRING,
             },
             status: {
                 type: Sequelize.BOOLEAN,
